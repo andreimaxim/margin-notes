@@ -1,0 +1,13 @@
+default: &default
+  adapter: postgresql
+  pool: 5
+  host: <%= ENV.fetch("PGHOST", "/var/run/postgresql") %>
+  username: <%= ENV.fetch("PGUSER", ENV.fetch("USER", "postgres")) %>
+
+development:
+  <<: *default
+  database: <%= ENV.fetch("NOTEBOOK_DB", "margin_notes_development") %>
+
+test:
+  <<: *default
+  database: <%= ENV.fetch("NOTEBOOK_DB", "margin_notes_test") %>
