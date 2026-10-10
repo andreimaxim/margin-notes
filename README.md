@@ -12,7 +12,8 @@ bin/rails db:prepare
 bin/rails server
 ```
 
-The application starts from Rails 7.0 with its original framework defaults.
+The application runs Rails 8.0.5 and retains its original Rails 7.0 framework
+defaults. The installed Rails version and `load_defaults` are separate choices.
 SQLite stores development data in `db/development.sqlite3`; no database daemon
 or Redis service is needed. This is local development configuration, not a
 production deployment setup.

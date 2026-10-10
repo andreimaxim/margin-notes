@@ -16,7 +16,7 @@ module MarginNotes
     config.hosts.clear
     config.cache_store = :memory_store, { namespace: "notebook" }
     config.active_job.queue_adapter = :inline
-    config.action_dispatch.show_exceptions = false
+    config.action_dispatch.show_exceptions = :none
     config.active_support.deprecation = :stderr
     config.i18n.available_locales = [:en, :fr]
     config.logger = ActiveSupport::Logger.new($stderr)

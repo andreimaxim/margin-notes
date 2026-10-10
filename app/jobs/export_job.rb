@@ -1,5 +1,5 @@
 class ExportJob < ActiveJob::Base
-  retry_on IOError, wait: :exponentially_longer, attempts: 2
+  retry_on IOError, wait: :polynomially_longer, attempts: 2
 
   def perform(title, amount = nil, deadline = nil)
     raise IOError, "export destination unavailable" if title == "offline"

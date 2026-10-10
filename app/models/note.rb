@@ -1,6 +1,6 @@
 class Note < ActiveRecord::Base
   enum :status, { draft: 0, published: 1 }
-  serialize :metadata, JSON
+  serialize :metadata, coder: JSON
   alias_attribute :caption, :title
 
   def title
