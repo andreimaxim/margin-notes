@@ -1,0 +1,16 @@
+# Margin Notes
+
+A small Rails JSON application backed by SQLite.
+
+Requires Ruby 3.4.7. Install the locked bundle, then prepare the local database:
+
+```sh
+bundle install
+bin/rails db:prepare
+bin/rails server
+```
+
+The application starts from Rails 7.0 with its original framework defaults.
+SQLite stores development data in `db/development.sqlite3`; no database daemon
+or Redis service is needed. This is local development configuration, not a
+production deployment setup.
