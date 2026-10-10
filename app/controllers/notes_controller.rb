@@ -35,6 +35,21 @@ class NotesController < ActionController::API
     render json: Note.exportable(params.fetch(:limit, "10")).pluck(:id)
   end
 
+  def statistics
+    render json: { average_title_length: Note.average_title_length.to_f }
+  end
+
+  def archive
+    note = Note.find(params[:id])
+    Note.archive_group(note.id)
+    head :no_content
+  end
+
+  def publish
+    Note.where(archived: false).publish_unique
+    head :no_content
+  end
+
   def preview
     @notes = Note.order(:id)
     render :index
