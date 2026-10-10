@@ -1,10 +1,17 @@
 class Note < ActiveRecord::Base
-  enum :status, { draft: 0, published: 1 }
+  enum status: { draft: 0, published: 1 }
+  enum :delivery_mode, { immediate: 0, digest: 1 }
   serialize :metadata, JSON
   alias_attribute :caption, :title
+  alias_attribute :export_heading, :display_title
+  self.partial_writes = false
 
   def title
     "Note: #{super}"
+  end
+
+  def display_title
+    "#{caption} (#{status})"
   end
 
   def self.exportable(limit)

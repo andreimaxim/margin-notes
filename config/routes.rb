@@ -13,6 +13,9 @@ Rails.application.routes.draw do
   get "/preview", to: "notes#preview"
   get "/cache-status", to: "notes#cache_status"
   get "/stream", to: "streams#show"
+  get "/export-preferences", to: "notes#export_preferences"
+  get "/legacy-export", to: "notes#legacy_export"
+  get "/compose", to: "notes#compose"
   get "(/locale/:locale)/products(/:id)", to: "notes#catalog", as: :catalog
   get "/freshness", to: "notes#freshness"
 end

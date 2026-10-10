@@ -16,6 +16,18 @@ class NotesController < ActionController::API
     render json: { status: "updated" } if stale?(last_modified: Time.utc(1994, 11, 6, 8, 49, 37))
   end
 
+  def export_preferences
+    render json: { label: ExportPreferences.label, timezone: ExportPreferences.timezone }
+  end
+
+  def legacy_export
+    render json: { format: ExportPreferences.warn_legacy_format, notes: Note.order(:id).pluck(:id) }
+  end
+
+  def compose
+    render json: { form: ExportPreferences.note_form(view_context) }
+  end
+
   def index
     @notes = Note.order(:id)
     render :index
