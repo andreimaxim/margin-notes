@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# Prepare the PostgreSQL/Redis notebook on a fresh or restored Linux Orb.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+echo '== System dependencies =='
+sudo apt-get update -qq
+sudo env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends \
+  postgresql postgresql-contrib redis-server \
+  build-essential libssl-dev libyaml-dev zlib1g-dev libffi-dev libreadline-dev libpq-dev curl ca-certificates
+
+echo '== Starting managed database services =='
+amp orb service start margin-notes-postgres --port 5432 \
+  --command 'sudo pg_ctlcluster --foreground --skip-systemctl-redirect "$(ls /etc/postgresql | sort -V | tail -1)" main start'
+amp orb service start margin-notes-redis --port 6379 \
+  --command 'redis-server --save "" --appendonly no --port "$PORT"'
+if ! sudo -u postgres psql -X -tAc "SELECT 1 FROM pg_roles WHERE rolname = '$(id -un)'" | grep -qx 1; then
+  sudo -u postgres createuser --createdb "$(id -un)"
+fi
+
+echo '== Installing mise and Ruby =='
+curl --fail --silent --show-error --location https://mise.run | sh
+mise trust "$PWD/mise.toml"
+mise install
+eval "$(mise activate bash --shims)"
+printf '\n%s\n' 'eval "$(mise activate bash --shims)"' >> "$HOME/.bashrc"
+
+echo '== Installing locked gems and preparing PostgreSQL =='
+gem list -i bundler -v 2.6.9 >/dev/null || gem install bundler -v 2.6.9 --no-document
+BUNDLE_FROZEN=true bundle install
+bin/rails db:prepare

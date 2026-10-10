@@ -34,7 +34,7 @@ bin/rails test test/models/note_test.rb
 ```
 
 - Start PostgreSQL and Redis before running Rails commands. Orb setup manages
-  them through Amp's service supervisor; `.agents/services` starts them again.
+  them through Amp's service supervisor; `.agents/resume` starts them again.
 - Development uses `margin_notes_development`; tests use `margin_notes_test`.
 - `PGHOST` and `PGUSER` select PostgreSQL access; `REDIS_URL` selects the cache.
 - Request and SQL logs go to stderr, including when running tests.
